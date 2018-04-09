@@ -4,6 +4,7 @@ Created on Sun Apr  8 23:35:50 2018
 
 @author: bermu
 """
+from Checkers import * 
 
 class Game: 
     children = []
@@ -14,11 +15,15 @@ class Game:
         
     def sprout(self, id_player): 
         for child in self.children: 
-            child.sprout(self.get_other_player)
+            print("jojo")
+            child.sprout(self.get_other_player(id_player))
         
         if(self.children == []): 
+            print("juju")
             moves = self.board.get_normal_moves(id_player)
+            print("a?")
             for board_ in moves: 
+                print("ooki")
                 self.children.append(Game(board_))
         
     def minimax(self, id_player): 
@@ -38,14 +43,17 @@ class Game:
         
     def get_move(self, id_player): 
         if (self.children == []): 
+            print("1")
             return None 
         best = None 
+        print("2")
         max_score = 0
         if (id_player == 1): 
             max_score = float('-inf') 
         else: 
             max_score = float('inf')     
         for child in self.children:
+            print("3")
             value = child.minimax(id_player)
             minimax_sign = 0 
             if (id_player == 1): 
@@ -56,4 +64,11 @@ class Game:
                 max_score = value 
                 best = child
         return best 
+    
+    def get_other_player(self, player_id):
+        if (player_id == 1 or player_id == 3):
+            return [2, 4]
+        elif(player_id == 2 or player_id == 4): 
+            return [1, 3]
+
         

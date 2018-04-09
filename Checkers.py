@@ -10,16 +10,16 @@ np.set_printoptions(threshold=np.nan)
 
 
 
-class board: 
+class Board: 
     board = [] 
     
     def __init__(self, size = 8, board1 = [], i = None, j = None, code = None): 
         if (board1 == []): 
-            board = init_board(size)
+            self.board = self.init_board(size)
         else: 
             self.board = board1 
         if i is not None and j is not None and code is not None: 
-            value = board[i,j]
+            value = self.board[i,j]
             self.board[i,j] = 0
             row_dir = code[0]
             col_dir = code[1]
@@ -50,43 +50,64 @@ class board:
 
     def get_normal_moves(self, player):
         moves = []
-        for i in range(len(board)): 
-            for j in range(len(board[0])): 
-                if (((player == 1 or player == 3) and (board[i,j] == 1 or board[i,j] == 3)) or 
-                ((player == 2 or player == 4) and (board[i,j] == 2 or board[i,j] == 4))): 
-                    moves.extend(get_jump_moves(i, j, board[i,j]))
+        for i in range(len(self.board)): 
+            for j in range(len(self.board[0])): 
+                print("wat")
+                if (((player == 1 or player == 3) and (self.board[i,j] == 1 or self.board[i,j] == 3)) or 
+                ((player == 2 or player == 4) and (self.board[i,j] == 2 or self.board[i,j] == 4))): 
+                    print("wat2")
+                    moves.extend(self.get_jump_moves(i, j, self.board[i,j]))
         if (len(moves) == 0): ## will only have step moves
-            for i in range(len(board)): 
-                for j in range(len(board[0])): 
-                    if ((player == 1 or player == 3) and (board[i,j] == 1 or board[i,j] == 3)):
-                        if (valid_open_pos(i-1, j+1)): 
-    ##                        moves.append(generateBoard(board))
-            
+            print("wa3")
+            for i in range(len(self.board)): 
+                for j in range(len(self.board[0])): 
+                    print(moves)
+                    print("watnani")
+                    if ((player == 1 or player == 3) and (self.board[i,j] == 1 or self.board[i,j] == 3)):
+                        if (self.valid_open_pos(i-1, j+1)):      ## right and up 
+                            moves.append(Board(self, i, j, [1, 1, 0]))
+                        if (self.valid_open_pos(i+1, j+1)):      ##  right and down
+                            moves.append(Board(self, i, j, [-1, 1, 0]))
+                        if (self.board[i,j] == 3):
+                            if (self.valid_open_pos(i-1, j-1)):  ##  left and up 
+                                moves.append(Board(self, i, j, [1, -1, 0]))
+                            if (self.valid_open_pos(i+1, j-1)):  ##  left and down
+                                moves.append(Board(self, i, j, [-1, -1, 0]))
+                    if ((player == 2 or player == 4) and (self.board[i,j] == 2 or self.board[i,j] == 4)):
+                        if (self.valid_open_pos(i-1, j-1)):      ## left and up
+                            moves.append(Board(self, i, j, [1, -1, 0]))
+                        if (self.valid_open_pos(i+1, j-1)):      ## left and down 
+                            moves.append(Board(self, i, j, [-1, -1, 0]))
+                        if (self.board[i,j] == 4):
+                            if (self.valid_open_pos(i-1, j+1)):  ##  right and up
+                                moves.append(Board(self, i, j, [1, 1, 0]))
+                            if (self.valid_open_pos(i+1, j-1)):  ##  right and down
+                                moves.append(Board(self, i, j, [-1, 1, 0]))
         return moves
                 
 
     def get_jump_moves(self, i, j, player_type):
         moves = []
         
-        if (player_type == 1 || player_type == 3 || player_type == 4): #piece moves to the same direction, player 1 or queen player 2
-            if(possible_jump(i, j, i-1,j+1)):
-                new_board = board(self, i, j, 2)
+        if (player_type == 1 or player_type == 3 or player_type == 4): #piece moves to the same direction, player 1 or queen player 2
+            if(self.possible_jump(i, j, i-1,j+1)):
+                new_board = Board(self, i, j, [1, 1, 1]) ## right up
                 moves.append(new_board)
                 moves.extend(new_board.get_jump_moves(i-2,j+2, player_type)) #add all the jump moves from this jump move
 
-            if(possible_jump(i, j, i+1,j+1):
-               new_board = board(self, i, j, 3)
+            if(self.possible_jump(i, j, i+1,j+1)):
+               new_board = Board(self, i, j, [-1, 1, 1]) ## right down
                moves.append(new_board)
                moves.extend(new_board.get_jump_moves(i+2,j+2, player_type)) #add all the jump moves from this jump move
 
-        if (player_type == 2 || player_type == 4 || player_type == 3): #piece moves to the same direction, player 2 or queen player 1
-            if(possible_jump(i, j, i-1,j-1)):
-               new_board = board(self, i, j, 6)
+        if (player_type == 2 or player_type == 4 or player_type == 3): #piece moves to the same direction, player 2 or queen player 1
+            if(self.possible_jump(i, j, i-1,j-1)):
+               new_board = Board(self, i, j, [-1, -1, 1]) ## left up
                moves.append(new_board)
                moves.extend(new_board.get_jump_moves(i-2,j-2, player_type)) #add all the jump moves from this jump move
                
-            if(possible_jump(i, j, i+1,j-1)):
-               new_board = board(self, i, j, 7)
+            if(self.possible_jump(i, j, i+1,j-1)):
+               new_board = Board(self, i, j, [1, -1, 1]) ## left down 
                moves.append(new_board)
                moves.extend(new_board.get_jump_moves(i+2,j-2, player_type)) #add all the jump moves from this jump move
                
@@ -103,65 +124,61 @@ class board:
     def possible_jump(self, i1, j1, i2, j2): 
         further_i = 2 * i2 - i1 
         further_j = 2 * j2 - j1 
-        other_player = get_other_player(board[i1,j1])
+        other_player = self.get_other_player(self.board[i1,j1])
         ##we check that further is valid and the middle guy its from the other player 
         ## so it can be eaten 
-        return (valid_open_pos(further_i, further_j) and (board[i2,j2] == other_player[0] or board[i2,j2] == other_player[1]))
+        return (self.valid_open_pos(further_i, further_j) and (self.board[i2,j2] == other_player[0] or self.board[i2,j2] == other_player[1]))
 
 
     def valid_open_pos(self, i, j): 
-        return (exist_position(i,j) and board[i,j] == 0)
+        if (self.exist_position(i,j) == False):
+            return False
+        else:
+            if (self.board[i,j] == 0):
+                return True
+            else: 
+                return False
+        
 
 
     def exist_position(self, i, j): 
         ## checks if i is inside the rows length and same with j and columns also if 
         ## space is 0 because thats valid the -1 aren't 
-        return (i >= 0 and  i < len(board) and j >= 0 and len(board[0]))
+        
+        return (i >= 0 and  i < len(self.board) and j >= 0 and j < len(self.board[0]))
 
 
-    def get_normal_moves(self, player):
-        moves = []
-        for i in range(len(self.board)): 
-            for j in range(len(self.board[0])): 
-                if (((player == 1 or player == 3) and (self.board[i,j] == 1 or self.board[i,j] == 3)) or 
-                ((player == 2 or player == 4) and (self.board[i,j] == 2 or self.board[i,j] == 4))): 
-                    moves.extend(get_jump_moves(i, j, self.board[i,j]))
-        if (len(moves) == 0): ## will only have step moves
-            for i in range(len(self.board)): 
-                for j in range(len(self.board[0])): 
-                    if ((player == 1 or player == 3) and (self.board[i,j] == 1 or self.board[i,j] == 3)):
-                        if (valid_open_pos(i-1, j+1)):      ## right and up 
-                            moves.append(board(self, i, j, [1, 1, 0]))
-                        if (valid_open_pos(i+1, j+1)):      ##  right and down
-                            moves.append(board(self, i, j, [-1, 1, 0]))
-                        if (self.board[i,j] == 3):
-                            if (valid_open_pos(i-1, j-1)):  ##  left and up 
-                                moves.append(board(self, i, j, [1, -1, 0]))
-                            if (valid_open_pos(i+1, j-1)):  ##  left and down
-                                moves.append(board(self, i, j, [-1, -1, 0]))
-                     if ((player == 2 or player == 4) and (self.board[i,j] == 2 or self.board[i,j] == 4)):
-                        if (valid_open_pos(i-1, j-1)):      ## left and up
-                            moves.append(board(self, i, j, [1, -1, 0]))
-                        if (valid_open_pos(i+1, j-1)):      ## left and down 
-                            moves.append(board(self, i, j, [-1, -1, 0]))
-                        if (self.board[i,j] == 4):
-                            if (valid_open_pos(i-1, j+1)):  ##  right and up
-                                moves.append(board(self, i, j, [1, 1, 0]))
-                            if (valid_open_pos(i+1, j-1)):  ##  right and down
-                                moves.append(board(self, i, j, [-1, 1, 0]))
-        return moves
 
-
-    def board_value():
+    def board_value(self):
         piece_difference = 0
         for i in range(len(self.board)):
-            for j in range (len(board[0])):
-                piece_difference += board[a][b]
+            for j in range (len(self.board[0])):
+                piece_difference += self.board[i][j]
         return piece_difference
     
+    
+    
+    def even(self,num):
+        if (num % 2 == 0): 
+            return True    
+        else:     
+            return False
+         
+    def init_board(self, size):
+        s = (size, size)
+        self.board = np.zeros(s)
+        for i in range(size):
+            for j in range(size):
+                if((self.even(i)==False and self.even(j)) or (self.even(i) and self.even(j) == False)): 
+                    self.board[i,j] = -1
+                elif(( i == 0 or i == 1 or i == 2 ) and ((self.even(i) and self.even(j)) or (self.even(i) ==0 and self.even(j) ==0))):
+                     self.board[i,j] = 1
+                elif(( i == size-1 or i == size-2 or i == size-3 ) and ((self.even(i) and self.even(j)) or (self.even(i)==0 and self.even(j)==0))):
+                     self.board[i,j] = 2 
+        return self.board
+     
+    def game_over(self):
+        if not self.get_normal_moves(1):
+            return True
+        return False
 
-def main (board_size): 
-    init_board(board_size)
-
-
-main(8)
