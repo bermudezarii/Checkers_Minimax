@@ -26,7 +26,7 @@ class board:
             jump = code[2]
             
             if (jump == 1): ## +2 or -2 cuz jump
-                if (row_dir == -1): ## up
+                if (row_dir == 1): ## up
                     i -= 2
                 else:
                     i += 2          ## down 
@@ -35,7 +35,7 @@ class board:
                 else: 
                     j += 2          ## right
             else:           ## +1 or - 1 cuz normal move
-                if (row_dir == -1): ## up
+                if (row_dir == 1): ## up
                     i -= 1
                 else:
                     i += 1          ## down 
