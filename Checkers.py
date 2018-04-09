@@ -4,6 +4,7 @@ Created on Sun Apr  8 01:27:14 2018
 
 @author: bermu
 """
+#prueba jaja
 import numpy as np
 np.set_printoptions(threshold=np.nan)
 
