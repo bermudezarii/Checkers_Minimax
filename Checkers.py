@@ -82,23 +82,10 @@ def get_normal_moves(player):
             for j in range(len(board[0])): 
                 if ((player == 1 or player == 3) and (board[i,j] == 1 or board[i,j] == 3)):
                     if (valid_open_pos(i-1, j+1)): 
-                        moves.append(generateBoard(board))
+##                        moves.append(generateBoard(board))
         
         
-                        if(open(a-1, b+1)){  //move right and up is open
-                            moves.add(new BoardPosition(this, a, b, 0));
-                        }
-                        if(open(a+1, b+1)){  //move right and down is open
-                            moves.add(new BoardPosition(this, a, b, 1));
-                        }
-                        if(board[a][b] == 2){
-                            if(open(a-1, b-1)){  //move left and up is open
-                                moves.add(new BoardPosition(this, a, b, 4));
-                            }
-                            if(open(a+1, b-1)){  //move leftt and down is open
-                                moves.add(new BoardPosition(this, a, b, 5));
-                            }
-                        }
+
                     
         
         
