@@ -69,21 +69,27 @@ class Board:
                         print(str(i) + " " + str(j))
                         if (self.valid_open_pos(i-1, j+1)):      ## right and up 
                             print("plater2")
-                            moves.append(Board(len(self.board), self.board, i, j, [1, 1, 0]))
+                            b = Board(len(self.board), self.board, i, j, [1, 1, 0])
+                            paint_board(b.board)
+                            moves.append(b)
                         if (self.valid_open_pos(i+1, j+1)):      ##  right and down
                             print("plater3")
                             b = Board(len(self.board), self.board, i, j, [-1, 1, 0])
-                            print(b.board)
+                            paint_board(b.board)
                             moves.append(b)
                             
                         if (self.board[i,j] == 3):
                             
                             if (self.valid_open_pos(i-1, j-1)):  ##  left and up 
                                 print("plater4")
-                                moves.append(Board(len(self.board), self.board, i, j, [1, -1, 0]))
+                                b = Board(len(self.board), self.board, i, j, [1, -1, 0])
+                                paint_board(b.board)
+                                moves.append(b)
                             if (self.valid_open_pos(i+1, j-1)):  ##  left and down
                                 print("plater5")
-                                moves.append(Board(len(self.board), self.board, i, j, [-1, -1, 0]))
+                                b = Board(len(self.board), self.board, i, j, [-1, -1, 0])
+                                paint_board(b.board)
+                                moves.append(b)
                     if ((player == 2 or player == 4) and (self.board[i,j] == 2 or self.board[i,j] == 4)):
                         if (self.valid_open_pos(i-1, j-1)):      ## left and up
                             moves.append(Board(len(self.board), self.board, i, j, [1, -1, 0]))
@@ -176,17 +182,18 @@ class Board:
         else:     
             return False
          
+            
     def init_board(self, size):
         s = (size, size)
         self.board = np.zeros(s)
         for i in range(size):
             for j in range(size):
-                if((self.even(i)==False and self.even(j)) or (self.even(i) and self.even(j) == False)): 
+                if(j < 3 and self.even(i+j)):
+                    self.board[i,j] = 1
+                elif (size-3 < j and self.even(i+j)):
+                    self.board[i,j] = 2
+                elif(self.even(i+j) == False): 
                     self.board[i,j] = -1
-                elif(( i == 0 or i == 1 or i == 2 ) and ((self.even(i) and self.even(j)) or (self.even(i) ==0 and self.even(j) ==0))):
-                     self.board[i,j] = 1
-                elif(( i == size-1 or i == size-2 or i == size-3 ) and ((self.even(i) and self.even(j)) or (self.even(i)==0 and self.even(j)==0))):
-                     self.board[i,j] = 2 
         return self.board
      
     def game_over(self):

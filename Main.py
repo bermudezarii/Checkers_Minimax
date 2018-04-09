@@ -28,7 +28,6 @@ def main (board_size):
 
     while (True and (player1.board.board not in strings)): 
         print("ovejas")
-        
         strings.append(player1.board.board) ## al tablero
         player1 = player1.get_move(id_player, 4)
         id_player = get_other_player(id_player)

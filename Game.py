@@ -6,6 +6,8 @@ Created on Sun Apr  8 23:35:50 2018
 """
 from Checkers import * 
 from PaintBoard import *
+from copy import copy
+
 class Game: 
     children = []
     board = [] 
@@ -36,12 +38,14 @@ class Game:
             if(id_player == 1): 
                 max_ = float('-inf')
                 for child in self.children: 
-                    max_ = max(max_, child.minimax(self.get_other_player(id_player),  depth-1))
+                    new_child = copy(child)
+                    max_ = max(max_, new_child.minimax(self.get_other_player(id_player),  depth-1))
                 return max_ 
             else: 
                 min_ = float('inf') 
                 for child in self.children: 
-                    min_ = min(min_, child.minimax(self.get_other_player(id_player), depth-1))
+                    new_child = copy(child)
+                    min_ = min(min_, new_child.minimax(self.get_other_player(id_player), depth-1))
                 return min_
         return self.board.board_value()
         
@@ -61,6 +65,7 @@ class Game:
         for child in self.children:
             print("3")
             value = child.minimax(id_player, depth)
+            print("the value: " + str(value))
             minimax_sign = 0 
             if (id_player == 1): 
                 minimax_sign = 1 
