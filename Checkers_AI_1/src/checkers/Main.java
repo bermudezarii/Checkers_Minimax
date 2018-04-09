@@ -4,18 +4,16 @@ import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
+import java.util.Scanner;
+import java.util.ArrayList; 
 
-/**
- *
- * @author tim
- */
 public class Main extends JPanel implements KeyListener, FocusListener{
 
     public long sleepTime;
 
-    /**
-     * @param args the command line arguments
-     */
+  
+    
+    
     public static void main(String[] args) {
         System.out.println("Welcome to Checkers");
 
@@ -29,32 +27,29 @@ public class Main extends JPanel implements KeyListener, FocusListener{
 
         boolean player1 = true;
         while(!RED.BP.gameOver(player1) && !records.contains(RED.BP.toString())){
+            System.out.println("not GameOver of " + player1);
             System.out.println(RED.BP);
             records.add(RED.BP.toString());
 
             RED = RED.getMove(player1);  //tell red to become the next node down in its minimax list
+            ArrayList<Integer> moves  =  RED.move_user();
+            System.out.println(moves);
             player1 = !player1;
             RED.sprout(player1);
         }
+        String winner = ""; 
         System.out.println(RED.BP);
-        System.out.println("GAME OVER");
+         if(!player1){
+            winner = "Player 1";
+         }
+         else{
+             winner = "Player 2";
+         }
+        System.out.println("Winner: " + winner);
         
-
-//        int height = 600;
-//        int width = 900;
-//
-//        JFrame myJFrame = new JFrame("Checkers");
-//        Main myMain = new Main(10, width, height);
-//        myJFrame.setSize(width,height);
-//        myJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        myJFrame.add(myMain);  //add the viewer (itself) into the frame
-//        myJFrame.setVisible(true);
-//
-//        myJFrame.addFocusListener(myMain);
-//        myJFrame.addKeyListener(myMain);
-//        myJFrame.requestFocus();  //get focus
     }
 
+    
     public Main(long sleepTime, int width, int height){
         this.sleepTime = sleepTime;
     }
@@ -67,7 +62,6 @@ public class Main extends JPanel implements KeyListener, FocusListener{
         if(sleepTime >= 0){
             double screenDimensions[] = {getWidth(), getHeight()};
             try{
-//               myPopulation.draw(g);
             }catch(Exception e){System.out.println("Exception: " + e);}
             g.setColor(Color.BLACK);
             g.drawString("" + sleepTime, 0, 10);
@@ -77,7 +71,13 @@ public class Main extends JPanel implements KeyListener, FocusListener{
 
         try{Thread.sleep(sleepTime);}catch(Exception e){}
     }
-
+    public String display_player(boolean player){
+        if(player){
+            return "Player 1";
+         }
+        return "Player 2";
+    }
+    
     public void keyTyped(KeyEvent e){}
     public void keyPressed(KeyEvent e){
         //they pressed a key
@@ -91,4 +91,6 @@ public class Main extends JPanel implements KeyListener, FocusListener{
     public void keyReleased(KeyEvent e){}
     public void focusLost(FocusEvent e){}
     public void focusGained(FocusEvent e){}
+    
+   
 }

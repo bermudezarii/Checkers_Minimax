@@ -1,12 +1,7 @@
 package checkers;
 
 import java.util.LinkedList;
-import java.util.Random;
 
-/**
- * BoardPosition, a unique representation of the checkers board
- * @author tim
- */
 public class BoardPosition {
     public int[][] board;  //the usable squares on the board  0 is open, 1 is player 1, -1 is player 2, K is 1 or -1 * 2
 
@@ -27,12 +22,7 @@ public class BoardPosition {
         }
     }
 
-    /**
-     * creates a BoardPosition from an existing one
-     * @param BP
-     * @param peiceToMove
-     * @param newPlace
-     */
+    
     public BoardPosition(BoardPosition BP, int A, int B, int code){
         board = new int[8][8];
         for(int a = 0; a < board.length; a++){
@@ -75,18 +65,13 @@ public class BoardPosition {
         }
     }
 
-    /**
-     * returns true if this is an ending position
-     * @return
-     */
     public boolean gameOver(boolean player1){
-        return getMoves(player1).isEmpty();
+        LinkedList <BoardPosition> moves = getMoves(player1);
+        //System.out.println(moves.toString());
+        return moves.isEmpty(); 
     }
 
-    /**
-     * returns the list of legal deviant board positions
-     * @return
-     */
+    
     public LinkedList <BoardPosition> getMoves(boolean player1){
         LinkedList <BoardPosition> moves = new LinkedList <BoardPosition> ();
 
@@ -140,12 +125,7 @@ public class BoardPosition {
         return moves;
     }
 
-    /**
-     * returns the jump moves for the given piece
-     * @param a
-     * @param b
-     * @return
-     */
+    
     public LinkedList <BoardPosition> getJumpMoves(int a, int b, int peiceType){
         LinkedList <BoardPosition> moves = new LinkedList <BoardPosition> ();
         if(peiceType > 0 || peiceType == -2){
@@ -176,22 +156,11 @@ public class BoardPosition {
         return moves;
     }
 
-    /**
-     * returns true if you can jump from a1, b1, over a2, b2
-     * @param a
-     * @param b
-     * @return
-     */
+    
     public boolean jumpOK(int a1, int b1, int a2, int b2){
         return open(2*a2 - a1, 2*b2 - b1) && inBounds(a2, b2) && (Math.signum(board[a2][b2]) == -Math.signum(board[a1][b1]));
     }
 
-    /**
-     * true if the given coordinates are open
-     * @param a
-     * @param b
-     * @return
-     */
     public boolean open(int a, int b){
         return inBounds(a,b) && board[a][b] == 0;
     }
@@ -200,11 +169,6 @@ public class BoardPosition {
         return a >= 0 && a < board.length && b >= 0 && b < board[0].length;
     }
 
-
-    /**
-     * what the score is for this board
-     * @return
-     */
     public int boardValue(){
         int peiceDifference = 0;
         for(int a = 0; a < board.length; a++){
@@ -216,15 +180,15 @@ public class BoardPosition {
     }
 
     @Override
-    public String toString(){
+    public String toString(){ // paints the boaard 
         String s = "board: ";
-        for(int a = 0; a < board.length; a++){
+        for(int i = 0; i < board.length; i++){
             s += "\n";
-            for(int b = 0; b < board[0].length; b++){
-                switch(board[a][b]){
+            for(int j = 0; j < board[0].length; j++){
+                switch(board[i][j]){
                     case(-2): s += 'B'; break;
                     case(-1): s += 'b'; break;
-                    case(0): s += '_'; break;
+                    case(0): s +=  "\u25A0"; break;
                     case(1): s += 'r'; break;
                     case(2): s += 'R'; break;
                     default: break;

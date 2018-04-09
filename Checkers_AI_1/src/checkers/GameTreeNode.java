@@ -1,11 +1,10 @@
 package checkers;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Scanner;
 
-/**
- * GameTreeNode: a point in a game tree
- * @author tim
- */
+
 public class GameTreeNode {
     public LinkedList <GameTreeNode> children;  //the resulting possible moves
     public BoardPosition BP;  //the associated board position
@@ -15,9 +14,7 @@ public class GameTreeNode {
         this.BP = BP;
     }
 
-    /**
-     * moves through the tree until it reaches the end, where it sprouts an additional generation on all
-     */
+
     public void sprout(boolean player1){
         for(GameTreeNode GTN : children){
             GTN.sprout(!player1);
@@ -31,26 +28,44 @@ public class GameTreeNode {
         }
     }
 
-    /**
-     * returns the value of the best move in this part of the tree
-     */
+     public ArrayList<Integer> move_user(){
+         ArrayList<Integer> moves = new ArrayList<Integer>();
+         
+        Scanner reader = new Scanner(System.in);  // Reading from System.int
+        System.out.println("Enter row of piece");
+        int n = reader.nextInt(); // Scans the next token of the input as an int.
+        moves.add(n); 
+        System.out.println("Enter col of piece");
+        n = reader.nextInt(); // Scans the next token of the input as an int.
+        moves.add(n); 
+        System.out.println("Enter new row of piece");
+        n = reader.nextInt(); // Scans the next token of the input as an int.
+        moves.add(n); 
+        System.out.println("Enter new col of piece");
+        n = reader.nextInt(); // Scans the next token of the input as an int.
+        moves.add(n);         
+        reader.close();
+        return moves; 
+    }
     public double minimax(boolean player1){
         if(children.isEmpty()){  //if this is as deep as it gets
             return BP.boardValue();
         }
 
         if(player1){  //if it is player1, we maximise the score
-            double a = Double.MIN_VALUE;
+            double a = Double.MIN_VALUE; // - infinito
             for(GameTreeNode GTN : children){  //cycle through all of the possible resulting moves
                 a = Math.max(a, GTN.minimax(!player1));
             }
+            System.out.println("player 1, max score,  a: " + a);
             return a;
         }
         else{   //if it is player 2, we minimize the score
-            double a = Double.MAX_VALUE;
+            double a = Double.MAX_VALUE; // + inifity 
             for(GameTreeNode GTN : children){  //cycle through all of the possible resulting moves
                 a = Math.min(a, GTN.minimax(!player1));
             }
+            System.out.println("player 2, min score, a: " + a);
             return a;
         }
     }
