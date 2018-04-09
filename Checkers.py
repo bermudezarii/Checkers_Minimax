@@ -6,6 +6,7 @@ Created on Sun Apr  8 01:27:14 2018
 """
 #prueba jaja
 import numpy as np
+from PaintBoard import *
 np.set_printoptions(threshold=np.nan)
 
 
@@ -61,28 +62,38 @@ class Board:
             print("wa3")
             for i in range(len(self.board)): 
                 for j in range(len(self.board[0])): 
-                    print(moves)
+                    
                     print("watnani")
                     if ((player == 1 or player == 3) and (self.board[i,j] == 1 or self.board[i,j] == 3)):
+                        print("plater")  
+                        print(str(i) + " " + str(j))
                         if (self.valid_open_pos(i-1, j+1)):      ## right and up 
-                            moves.append(Board(self, i, j, [1, 1, 0]))
+                            print("plater2")
+                            moves.append(Board(len(self.board), self.board, i, j, [1, 1, 0]))
                         if (self.valid_open_pos(i+1, j+1)):      ##  right and down
-                            moves.append(Board(self, i, j, [-1, 1, 0]))
+                            print("plater3")
+                            b = Board(len(self.board), self.board, i, j, [-1, 1, 0])
+                            print(b.board)
+                            moves.append(b)
+                            
                         if (self.board[i,j] == 3):
+                            
                             if (self.valid_open_pos(i-1, j-1)):  ##  left and up 
-                                moves.append(Board(self, i, j, [1, -1, 0]))
+                                print("plater4")
+                                moves.append(Board(len(self.board), self.board, i, j, [1, -1, 0]))
                             if (self.valid_open_pos(i+1, j-1)):  ##  left and down
-                                moves.append(Board(self, i, j, [-1, -1, 0]))
+                                print("plater5")
+                                moves.append(Board(len(self.board), self.board, i, j, [-1, -1, 0]))
                     if ((player == 2 or player == 4) and (self.board[i,j] == 2 or self.board[i,j] == 4)):
                         if (self.valid_open_pos(i-1, j-1)):      ## left and up
-                            moves.append(Board(self, i, j, [1, -1, 0]))
+                            moves.append(Board(len(self.board), self.board, i, j, [1, -1, 0]))
                         if (self.valid_open_pos(i+1, j-1)):      ## left and down 
-                            moves.append(Board(self, i, j, [-1, -1, 0]))
+                            moves.append(Board(len(self.board), self.board, i, j, [-1, -1, 0]))
                         if (self.board[i,j] == 4):
                             if (self.valid_open_pos(i-1, j+1)):  ##  right and up
-                                moves.append(Board(self, i, j, [1, 1, 0]))
+                                moves.append(Board(len(self.board), self.board, i, j, [1, 1, 0]))
                             if (self.valid_open_pos(i+1, j-1)):  ##  right and down
-                                moves.append(Board(self, i, j, [-1, 1, 0]))
+                                moves.append(Board(len(self.board), self.board, i, j, [-1, 1, 0]))
         return moves
                 
 
@@ -151,9 +162,10 @@ class Board:
 
     def board_value(self):
         piece_difference = 0
-        for i in range(len(self.board)):
-            for j in range (len(self.board[0])):
+        for i in range(8):
+            for j in range (8):
                 piece_difference += self.board[i][j]
+        
         return piece_difference
     
     

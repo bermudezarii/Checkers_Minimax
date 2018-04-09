@@ -19,21 +19,21 @@ def get_other_player(player_id):
 def main (board_size): 
     print("WELCOME TO DAMAS / CHECKERS")
     strings = [] 
-    player1 = Game(Board(6))
+    player1 = Game(Board(8))
     id_player = 1 
     for i in range(len(player1.board.board)):
         print("perros")
-        player1.sprout(id_player)
+        player1.sprout(id_player, 4)
         
 
-    while (player1.board.board not in strings): 
+    while (True and (player1.board.board not in strings)): 
         print("ovejas")
         
         strings.append(player1.board.board) ## al tablero
-        player1 = player1.get_move(id_player)
+        player1 = player1.get_move(id_player, 4)
         id_player = get_other_player(id_player)
-        player1.sprout(id_player)
-    print(player1.board)
+        player1.sprout(id_player,4)
+    print(player1.board.board)
     print("Game over")
 
 

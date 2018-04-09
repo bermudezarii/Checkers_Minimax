@@ -5,7 +5,7 @@ Created on Sun Apr  8 23:35:50 2018
 @author: bermu
 """
 from Checkers import * 
-
+from PaintBoard import *
 class Game: 
     children = []
     board = [] 
@@ -13,35 +13,40 @@ class Game:
     def __init__(self, board): 
         self.board = board 
         
-    def sprout(self, id_player): 
-        for child in self.children: 
-            print("jojo")
-            child.sprout(self.get_other_player(id_player))
-        
-        if(self.children == []): 
-            print("juju")
-            moves = self.board.get_normal_moves(id_player)
-            print("a?")
-            for board_ in moves: 
-                print("ooki")
-                self.children.append(Game(board_))
-        
-    def minimax(self, id_player): 
-        if(self.children == []):
-            return self.board.board_value()
-        if(id_player == 1): 
-            max_ = float('-inf')
+    def sprout(self, id_player, depth): 
+        if (depth > 0):
             for child in self.children: 
-                max_ = max(max_, child.minimax(self.get_other_player))
-            return max_ 
-        else: 
-            min_ = float('inf')
-            for child in self.children: 
-                min_ = min(min_, child.minimax(self.get_other_player))
-            return min_
+                child.sprout(self.get_other_player(id_player), depth-1)
+            
+            if(self.children == []): 
+                print("juju")
+                moves = self.board.get_normal_moves(id_player)
+                
+                print(moves)
+                for board_ in moves: 
+                    print("a?")
+                    paint_board(board_)
+                    self.children.append(Game(board_))
+                        
+            
+    def minimax(self, id_player, depth): 
+        if(depth > 0): 
+            if(self.children == []):
+                return self.board.board_value()
+            if(id_player == 1): 
+                max_ = float('-inf')
+                for child in self.children: 
+                    max_ = max(max_, child.minimax(self.get_other_player(id_player),  depth-1))
+                return max_ 
+            else: 
+                min_ = float('inf') 
+                for child in self.children: 
+                    min_ = min(min_, child.minimax(self.get_other_player(id_player), depth-1))
+                return min_
+        return self.board.board_value()
         
         
-    def get_move(self, id_player): 
+    def get_move(self, id_player, depth): 
         if (self.children == []): 
             print("1")
             return None 
@@ -51,16 +56,18 @@ class Game:
         if (id_player == 1): 
             max_score = float('-inf') 
         else: 
-            max_score = float('inf')     
+            max_score = float('inf')  
+        print(len(self.children))
         for child in self.children:
             print("3")
-            value = child.minimax(id_player)
+            value = child.minimax(id_player, depth)
             minimax_sign = 0 
             if (id_player == 1): 
                 minimax_sign = 1 
             else: 
                 minimax_sign = -1         
             if (best is None or (value*minimax_sign > max_score*minimax_sign)): 
+                print("pfa")
                 max_score = value 
                 best = child
         return best 
